@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap" rel="stylesheet">
+    <style type="text/css">
+      html{
+        font-family: 'Roboto Slab', serif;
+      }
+    </style>
+
+    <title>Relift Html Demo</title>
+  </head>
+  <body>
+
+    <div class="container" id="app">
+      <div class="row">
+
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="card mt-5">
+            <div class="card-body">
+              <h1 class="card-title text-center">{this.title}</h1>
+              <p class="card-text">A very small (3kb) view library that allows you to create Web Component, Custom Element, and helps you make any HTML page reactive without the bloat of big frameworks.<br>
+              https://relift-html.js.org/ </p>
+              <p>Today's date: {this.time}</p>
+
+              <div class="row">
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">
+                        Function Example
+                      </h5>
+                      <h6 class="card-subtitle mb-2 text-muted">Click Buttons To Change Value</h6>
+
+                      <p>Value: {this.count}</p>
+                      <button class="btn btn-success" @click="up">Up</button>
+                      <button class="btn btn-success" @click="down">Down</button>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">
+                        Api Example
+                        <form  style="display:inline-block; float:right; " @submit="fetchData">
+                          <input  class="form-control" type="search" placeholder="Todo Id" aria-label="Search" style="display:inline-block; width:unset" @keyup="fetchData" @bind="formData.id">
+                        </form>
+                      </h5>
+
+
+                      <div class="mt-4 slim-scroll" r-if="this.formData.id === '0' " style="height:400px;width:100%; overflow-y:scroll">
+                        <h6 class="card-subtitle mb-2 text-muted">Todo List</h6>
+                        <ul class="list-group">
+                          <li class="list-group-item" r-for="todo , key in this.todos">{key+1}) {todo.title}</li>
+                        </ul>
+                      </div>
+
+                      <div class="mt-4 slim-scroll" r-if="this.formData.id === '' " style="height:400px;width:100%; overflow-y:scroll">
+                        <h6 class="card-subtitle mb-2 text-muted">Todo List</h6>
+                        <ul class="list-group">
+                          <li class="list-group-item" r-for="todo , key in this.todos">{key+1}) {todo.title}</li>
+                        </ul>
+                      </div>
+
+                      <div r-if="this.formData.id > 0">
+                        <h6 class="card-subtitle mb-2 text-muted" >Single Todo Dexcription</h6>
+                        <div class="card">
+                          <div class="card-body">
+                            <p r-if=" 'id' in this.todo">Todo Id: {this.todo.id}</p>
+                            <p r-if=" 'title' in this.todo">Todo Title: {this.todo.title}</p>
+                            <p r-if=" 'completed' in this.todo">Todo Status: 
+                              <span r-if="this.todo.completed">Complited</span>
+                              <span r-else>Uncomplite</span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      
+
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+              
+            </div>
+          </div>  
+        </div>
+      </div>
+      
+    </div>
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"></script>
+  
+    <script type="module">
+      import reLiftHTML from 'https://unpkg.com/relift-html';
+      
+      reLiftHTML({
+        el: '#app',
+        data: {
+          count: 0,
+          title: 'Relift Html Demo',
+          name: 'reLiftHTML',
+          todos: [],
+          todo: {},
+          formData:{
+            id: '0'
+          },
+          time : '',
+        },
+        up() {
+          this.data.count++;
+        },
+        down() {
+          this.data.count--;
+        },
+        created(){
+          $('.slim-scroll').slimScroll({
+            height: '400px'
+          });
+
+          this.data.count = this.prop.start || 0;
+          this.fetchData();
+          setInterval( created => {
+
+            var today = new Date();
+            var time = "Date: "+new Date().toISOString().slice(0, 10) +" Time: "+today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            this.data.time = time;
+
+            this.data.time = time;
+            
+          }, 1000)
+        },
+
+        fetchData( ){
+          var id = this.data.formData.id;
+          var data = this.data;
+          var url = 'https://jsonplaceholder.typicode.com/todos';
+
+          if(id > 0){
+            url = 'https://jsonplaceholder.typicode.com/todos/'+id;
+          }
+
+          axios.get(url, {
+            params: {
+            }
+          })
+          .then(function (response) {
+
+            if(id > 0){
+              data.todo = response.data;
+            }else{
+              data.todos = response.data;
+              data.todo = {};
+            }
+            
+          })
+          .catch(function (error) {
+            console.log(error);
+          })
+          .then(function () {
+            
+          });
+        }
+      });
+    </script>
+
+
+  </body>
+</html>
+
